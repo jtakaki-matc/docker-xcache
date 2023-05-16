@@ -3,7 +3,7 @@
 ################
 
 
-FROM xcache AS stash-origin
+FROM xcache:latest
 LABEL maintainer OSG Software <help@opensciencegrid.org>
 
 # Specify the base Yum repository to get the necessary RPMs
@@ -29,17 +29,17 @@ RUN yum install -y stash-origin \
 # will blow up non-multiuser setups (SOFTWARE-5478)
 RUN rm /etc/xrootd/config.d/60-osg-multiuser.cfg
 
-COPY stash-origin/cron.d/* /etc/cron.d/
+COPY cron.d/* /etc/cron.d/
 RUN chmod 0644 /etc/cron.d/*
-COPY stash-origin/image-config.d/* /etc/osg/image-init.d/
-COPY stash-origin/supervisord.d/* /etc/supervisord.d/
+COPY image-config.d/* /etc/osg/image-init.d/
+COPY supervisord.d/* /etc/supervisord.d/
 
-COPY stash-origin/xrootd/* /etc/xrootd/config.d/
+COPY xrootd/* /etc/xrootd/config.d/
 # Add a placeholder scitokens.conf file, in case this origin isn't registered
 # and can't pull down a new one
-COPY stash-origin/scitokens.conf /run/stash-origin-auth/scitokens.conf
+COPY scitokens.conf /run/stash-origin-auth/scitokens.conf
 
-COPY stash-origin/rsyslog-stash-origin.conf /etc/rsyslog.d/stash-origin.conf
+COPY rsyslog-stash-origin.conf /etc/rsyslog.d/stash-origin.conf
 
 RUN mkdir -p /var/log/xrootd/stash-origin \
              /var/log/xrootd/stash-origin-auth && \
