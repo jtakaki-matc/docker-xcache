@@ -24,15 +24,3 @@ COPY rsyslog-atlas-xcache.conf /etc/rsyslog.d/atlas-xcache.conf
 RUN mkdir -p /var/log/xrootd/atlas-xcache && \
     touch    /var/log/xrootd/atlas-xcache/xrootd.log && \
     chown -R xrootd:xrootd /var/log/xrootd/atlas-xcache
-
-######################
-# atlas-xcache-debug #
-######################
-
-
-# Install debugging tools
-# Previous arg has gone out of scope
-ARG BASE_YUM_REPO=testing
-RUN yum -y install -y --enablerepo="osg-$BASE_YUM_REPO" \
-    gdb \
-    strace
