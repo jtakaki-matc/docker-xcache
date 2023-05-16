@@ -32,7 +32,7 @@ EXPOSE 1094
 # cms-xcache-debug #
 ####################
 
-FROM cms-xcache AS cms-xcache-debug
+FROM xcache:latest AS cms-xcache-debug
 # Install debugging tools
 # Previous arg has gone out of scope
 ARG BASE_YUM_REPO=testing

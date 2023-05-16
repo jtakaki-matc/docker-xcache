@@ -54,7 +54,7 @@ RUN mkdir -p /var/log/xrootd/stash-origin \
 # stash-origin-debug #
 ######################
 
-FROM stash-origin AS stash-origin-debug
+FROM xcache:latest AS stash-origin-debug
 # Install debugging tools
 # Previous arg has gone out of scope
 ARG BASE_YUM_REPO=testing

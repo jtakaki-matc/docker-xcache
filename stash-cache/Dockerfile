@@ -38,7 +38,7 @@ EXPOSE 8000
 # stash-cache-debug #
 #####################
 
-FROM stash-cache AS stash-cache-debug
+FROM xcache:latest AS stash-cache-debug
 # Install debugging tools
 # Previous arg has gone out of scope
 ARG BASE_YUM_REPO=testing
