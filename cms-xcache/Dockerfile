@@ -2,7 +2,7 @@
 # cms-xcache #
 ##############
 
-FROM xcache AS cms-xcache
+FROM xcache:latest
 LABEL maintainer OSG Software <help@opensciencegrid.org>
 
 ARG BASE_YUM_REPO=testing
@@ -14,13 +14,13 @@ RUN yum install -y \
                 xcache-consistency-check && \
     yum clean all --enablerepo=* && rm -rf /var/cache/
 
-COPY cms-xcache/limits.d/10-cms-xcache-limits.conf /etc/security/limits.d/
-COPY cms-xcache/supervisord.d/10-cms-xcache.conf /etc/supervisord.d/
-COPY cms-xcache/cron.d/* /etc/cron.d/
+COPY limits.d/10-cms-xcache-limits.conf /etc/security/limits.d/
+COPY supervisord.d/10-cms-xcache.conf /etc/supervisord.d/
+COPY cron.d/* /etc/cron.d/
 RUN chmod 0644 /etc/cron.d/*
-COPY cms-xcache/image-config.d/* /etc/osg/image-init.d/
-COPY cms-xcache/xcache-consistency-check-wrapper.sh /usr/bin/xcache-consistency-check-wrapper.sh
-COPY cms-xcache/rsyslog-cms-xcache.conf /etc/rsyslog.d/cms-xcache.conf
+COPY image-config.d/* /etc/osg/image-init.d/
+COPY xcache-consistency-check-wrapper.sh /usr/bin/xcache-consistency-check-wrapper.sh
+COPY rsyslog-cms-xcache.conf /etc/rsyslog.d/cms-xcache.conf
 
 RUN mkdir -p /var/log/xrootd/cms-xcache && \
     touch    /var/log/xrootd/cms-xcache/xrootd.log && \
