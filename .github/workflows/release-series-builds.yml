@@ -37,5 +37,3 @@ jobs:
             BASE_YUM_REPO=${{ matrix.repo }}
             BASE_OSG_SERIES=${{ matrix.osg_series }}
           pull: True
-          target: xcache
-          cache-to: type=local,dest=/tmp/.base-buildx-cache,mode=max
