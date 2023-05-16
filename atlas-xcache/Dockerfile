@@ -29,7 +29,7 @@ RUN mkdir -p /var/log/xrootd/atlas-xcache && \
 # atlas-xcache-debug #
 ######################
 
-FROM xcache:latest AS atlas-xcache-debug
+FROM xcache:latest
 # Install debugging tools
 # Previous arg has gone out of scope
 ARG BASE_YUM_REPO=testing
