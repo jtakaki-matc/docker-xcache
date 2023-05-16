@@ -2,7 +2,7 @@
 # atlas-xcache #
 ################
 
-FROM xcache AS atlas-xcache
+FROM xcache:latest
 LABEL maintainer OSG Software <help@opensciencegrid.org>
 
 # Specify the base Yum repository to get the necessary RPMs
@@ -15,11 +15,11 @@ RUN yum install -y --enablerepo=osg-contrib \
     yum install -y python3 python3-psutil python3-requests && \
     yum clean all --enablerepo=* && rm -rf /var/cache/
 
-COPY atlas-xcache/sbin/* /usr/local/sbin/
-COPY atlas-xcache/10-atlas-xcache-limits.conf /etc/security/limits.d
-COPY atlas-xcache/supervisord.d/10-atlas-xcache.conf /etc/supervisord.d/
-COPY atlas-xcache/image-config.d/10-atlas-xcache.sh /etc/osg/image-init.d/
-COPY atlas-xcache/rsyslog-atlas-xcache.conf /etc/rsyslog.d/atlas-xcache.conf
+COPY sbin/* /usr/local/sbin/
+COPY 10-atlas-xcache-limits.conf /etc/security/limits.d
+COPY supervisord.d/10-atlas-xcache.conf /etc/supervisord.d/
+COPY image-config.d/10-atlas-xcache.sh /etc/osg/image-init.d/
+COPY rsyslog-atlas-xcache.conf /etc/rsyslog.d/atlas-xcache.conf
 
 RUN mkdir -p /var/log/xrootd/atlas-xcache && \
     touch    /var/log/xrootd/atlas-xcache/xrootd.log && \
