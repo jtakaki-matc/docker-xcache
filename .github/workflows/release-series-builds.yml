@@ -14,6 +14,15 @@ on:
   workflow_dispatch:
 
 jobs:
+  make-date-tag:
+    runs-on: ubuntu-latest
+    if: contains(fromJson('["push", "repository_dispatch", "workflow_dispatch"]'), github.event_name) && startsWith(github.repository, 'opensciencegrid/')
+    outputs:
+      dtag: ${{ steps.mkdatetag.outputs.dtag }}
+    steps:
+    - name: make date tag
+      id: mkdatetag
+      run: echo "::set-output name=dtag::$(date +%Y%m%d-%H%M)"
   image-builds:
     name: xcache:${{ matrix.osg_series }}-${{ matrix.repo }} image build
     runs-on: ubuntu-latest
@@ -50,3 +59,27 @@ jobs:
           build-args: |
             BASE_YUM_REPO=${{ matrix.repo }}
             BASE_OSG_SERIES=${{ matrix.osg_series }}
+
+      - name: Load stash-cache image
+        uses: docker/build-push-action@v2.2.2
+        with:
+          context: ./stash-cache
+          build-args: |
+            BASE_YUM_REPO=${{ matrix.repo }}
+            BASE_OSG_SERIES=${{ matrix.osg_series }}
+          load: True  # allow access to built images through the Docker CLI
+          tags: stash-cache:latest
+
+      - name: Load stash-origin image
+        uses: docker/build-push-action@v2.2.2
+        with:
+          context: ./stash-origin
+          build-args: |            
+            BASE_YUM_REPO=${{ matrix.repo }}
+            BASE_OSG_SERIES=${{ matrix.osg_series }}
+          load: True  # allow access to built images through the Docker CLI
+          tags: stash-origin:latest
+        
+
+      - run: ./tests/test_stashcache_origin.sh "stash-origin:latest"
+      - run: ./tests/test_stashcache.sh "stash-cache:latest"
