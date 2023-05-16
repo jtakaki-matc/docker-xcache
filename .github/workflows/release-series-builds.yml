@@ -47,6 +47,26 @@ jobs:
           load: True
           tags: xcache:latest
 
+      - name: Generate tag list
+        id: generate-tag-list
+        env:
+          REPO: ${{ matrix.repo }}
+          SERIES: ${{ matrix.osg_series }}
+          IMAGE: ${{ matrix.image }}
+          TIMESTAMP: ${{ needs.make-date-tag.outputs.dtag }}
+        run: |
+          docker_repo=opensciencegrid/$IMAGE
+          tag_list=()
+          for registry in hub.opensciencegrid.org docker.io; do
+            for image_tag in "$SERIES-$REPO" "$SERIES-$REPO-$TIMESTAMP"; do
+              tag_list+=("$registry/$docker_repo":"$image_tag")
+            done
+          done
+          # This causes the tag_list array to be comma-separated below,
+          # which is required for build-push-action
+          IFS=,
+          echo "::set-output name=taglist::${tag_list[*]}"
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
         with:
