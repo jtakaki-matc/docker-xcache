@@ -4,10 +4,10 @@ name: Build release series tagged images
 on:
   push:
     branches:
-      - master
-  pull_request:
-    branches:
-      - '**'
+      - dockerxcache-testing
+  #pull_request:
+    #branches:
+      #- '**'
   repository_dispatch:
     types:
       - dispatch-build
