@@ -6,7 +6,7 @@
 ARG BASE_YUM_REPO=testing
 ARG BASE_OSG_SERIES=3.6
 
-FROM opensciencegrid/software-base:$BASE_OSG_SERIES-el7-$BASE_YUM_REPO AS xcache
+FROM opensciencegrid/software-base:$BASE_OSG_SERIES-el7-$BASE_YUM_REPO
 LABEL maintainer OSG Software <help@opensciencegrid.org>
 
 # Previous arg has gone out of scope
@@ -32,7 +32,7 @@ RUN mkdir -p /var/lib/xcache/
 # ADD complains when there aren't files that match a wildcard so we
 # this needs to be relatively unrestricted to support the case where
 # there aren't any pre-built RPMs
-ADD xcache/packaging/* /var/lib/xcache/
+ADD packaging/* /var/lib/xcache/
 
 # Install any pre-built RPMs
 RUN yum -y install /var/lib/xcache/*.rpm --enablerepo="osg-$BASE_YUM_REPO" || \
@@ -44,19 +44,19 @@ RUN yum install -y \
         gperftools-devel && \
     yum clean all --enablerepo=* && rm -rf /var/cache/yum/
 
-ADD xcache/cron.d/* /etc/cron.d/
+ADD cron.d/* /etc/cron.d/
 RUN chmod 0644 /etc/cron.d/*
-ADD xcache/sbin/* /usr/local/sbin/
-ADD xcache/image-config.d/* /etc/osg/image-init.d/
-ADD xcache/xrootd/* /etc/xrootd/config.d/
-ADD xcache/rsyslog.conf /etc/rsyslog.conf
+ADD sbin/* /usr/local/sbin/
+ADD image-config.d/* /etc/osg/image-init.d/
+ADD xrootd/* /etc/xrootd/config.d/
+ADD rsyslog.conf /etc/rsyslog.conf
 
 RUN rm -f /etc/rsyslog.d/listen.conf
 
 RUN mkdir -p "$XC_ROOTDIR" /var/spool/rsyslog/workdir /var/run/rsyslog
 RUN chown -R xrootd:xrootd /xcache/ /var/spool/rsyslog/workdir /var/run/rsyslog
 
-COPY xcache/supervisord.d/* /etc/supervisord.d/
+COPY supervisord.d/* /etc/supervisord.d/
 
 RUN rm -f /etc/xrootd/macaroon-secret
 
