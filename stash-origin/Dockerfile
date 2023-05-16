@@ -49,3 +49,15 @@ RUN mkdir -p /var/log/xrootd/stash-origin \
              /var/log/xrootd/stash-origin-auth/cmsd.log && \
     chown -R xrootd:xrootd /var/log/xrootd/stash-origin \
                            /var/log/xrootd/stash-origin-auth
+
+######################
+# stash-origin-debug #
+######################
+
+FROM stash-origin AS stash-origin-debug
+# Install debugging tools
+# Previous arg has gone out of scope
+ARG BASE_YUM_REPO=testing
+RUN yum -y install -y --enablerepo="osg-$BASE_YUM_REPO" \
+    gdb \
+    strace
