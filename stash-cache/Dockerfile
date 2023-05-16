@@ -33,3 +33,15 @@ RUN mkdir -p /var/log/xrootd/stash-cache \
                            /var/log/xrootd/stash-cache-auth
 
 EXPOSE 8000
+
+#####################
+# stash-cache-debug #
+#####################
+
+FROM stash-cache AS stash-cache-debug
+# Install debugging tools
+# Previous arg has gone out of scope
+ARG BASE_YUM_REPO=testing
+RUN yum -y install -y --enablerepo="osg-$BASE_YUM_REPO" \
+    gdb \
+    strace
