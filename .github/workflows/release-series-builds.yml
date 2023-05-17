@@ -110,7 +110,7 @@ jobs:
         uses: docker/build-push-action@v2.2.2
         with:
           context: ${{matrix.image}}
-          push: False
+          push: contains(fromJson('["push", "repository_dispatch", "workflow_dispatch"]'), github.event_name) && startsWith(github.repository, 'opensciencegrid/')
           build-args: |
             BASE_YUM_REPO=${{ matrix.repo }}
             BASE_OSG_SERIES=${{ matrix.osg_series }}
