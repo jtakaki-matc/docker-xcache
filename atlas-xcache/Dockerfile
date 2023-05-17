@@ -10,9 +10,8 @@ ARG BASE_YUM_REPO=testing
 
 ENV XC_IMAGE_NAME atlas-xcache
 
-RUN yum -y install -y --enablerepo="osg-$BASE_YUM_REPO" \
-    gdb \
-    strace \
+RUN yum install -y --enablerepo=osg-contrib \
+        atlas-xcache && \
     yum install -y python3 python3-psutil python3-requests && \
     yum clean all --enablerepo=* && rm -rf /var/cache/ 
     
