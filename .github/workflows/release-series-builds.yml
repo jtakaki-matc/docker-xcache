@@ -27,6 +27,7 @@ jobs:
   image-builds:
     name: xcache:${{ matrix.osg_series }}-${{ matrix.repo }} image build
     runs-on: ubuntu-latest
+    needs: [make-date-tag]
     strategy:
       fail-fast: False
       matrix:
