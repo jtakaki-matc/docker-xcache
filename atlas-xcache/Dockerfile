@@ -10,13 +10,12 @@ ARG BASE_YUM_REPO=testing
 
 ENV XC_IMAGE_NAME atlas-xcache
 
-RUN yum install -y --enablerepo=osg-contrib \
-        atlas-xcache && \
-    yum install -y python3 python3-psutil python3-requests && \
-    yum clean all --enablerepo=* && rm -rf /var/cache/ \
-    yum -y install -y --enablerepo="osg-$BASE_YUM_REPO" \
+RUN yum -y install -y --enablerepo="osg-$BASE_YUM_REPO" \
     gdb \
-    strace
+    strace \
+    yum install -y python3 python3-psutil python3-requests && \
+    yum clean all --enablerepo=* && rm -rf /var/cache/ 
+    
 
 COPY sbin/* /usr/local/sbin/
 COPY 10-atlas-xcache-limits.conf /etc/security/limits.d
