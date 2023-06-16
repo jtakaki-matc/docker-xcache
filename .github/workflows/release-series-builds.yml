@@ -3,15 +3,15 @@ name: Build release series tagged images
 
 on:
   push:
-    branches:
-      - master
-  pull_request:
-    branches:
-      - '**'
-  repository_dispatch:
-    types:
-      - dispatch-build
-  workflow_dispatch:
+    #branches:
+      #- master
+  #pull_request:
+    #branches:
+      #- '**'
+  #repository_dispatch:
+    #types:
+      #- dispatch-build
+  #workflow_dispatch:
 
 jobs:
   base-image-build:
